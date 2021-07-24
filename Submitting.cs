@@ -189,8 +189,8 @@ namespace Rego_APP
             try
             {
                 ((FloatingActionButton)sender).Enabled = false;
-                var d = GetData();
                 var s = (DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + DateTime.Now.Millisecond.ToString() + (new Random()).Next(0, 84898412)).ToString();
+                var d = GetData(s);
                 await firebase.Child(s).PutAsync<Data>(d);
                 try
                 {
@@ -214,9 +214,9 @@ namespace Rego_APP
         }
 
 
-        Data GetData()
+        Data GetData(string s)
         {
-            return new Data() { Name = MainActivity.GoogleUser.Name, Email = MainActivity.GoogleUser.Email, Image = GetImageBytes(CurrentImage), Address = Second.Address , Rating = GetRate() , Comment = FindViewById<EditText>(Resource.Id.Comment).Text , Date = DateTime.Now};
+            return new Data() {ID =s ,Name = MainActivity.GoogleUser.Name, Email = MainActivity.GoogleUser.Email, Image = GetImageBytes(CurrentImage), Address = Second.Address , Rating = GetRate() , Comment = FindViewById<EditText>(Resource.Id.Comment).Text , Date = DateTime.Now};
         }
 
         

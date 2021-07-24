@@ -21,6 +21,7 @@ namespace Rego_APP
         public byte[] Image;
         public int Rating;
         public DateTime Date;
+        public string ID;
 
         public LocationInfo Address;
     }
