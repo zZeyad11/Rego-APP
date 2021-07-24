@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">REGO</string>
     <string name="action_settings">Settings</string>
+  <string name="facebook_app_id">334584984979049</string>
+  <string name="fb_login_protocol_scheme">fb334584984979049</string>
+  <string name="facebook_app_name">RegoApp</string>
 </resources>

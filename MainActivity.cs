@@ -15,6 +15,10 @@ using Firebase.Auth;
 using Firebase;
 using Android.Content;
 using MarcTron.Plugin;
+using Android.Gms.Ads;
+using Xamarin.Facebook;
+using System.Collections.Generic;
+using Plugin.FacebookClient;
 
 namespace Rego_APP
 {
@@ -28,16 +32,16 @@ namespace Rego_APP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            FacebookClientManager.Initialize(this);
             MobileAds.Initialize(ApplicationContext);
+            FacebookSdk.SdkInitialize(this.ApplicationContext);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
 
             SetContentView(Resource.Layout.activity_maininvert);
 
             Intilize();
-           
-            
 
-       
+
         }
 
         private void Intilize()
@@ -45,6 +49,7 @@ namespace Rego_APP
             g = new GoogleManager();
             GoogleUser = new GoogleUser();
             FindViewById<ImageView>(Resource.Id.GoogleSignBtn).SetOnClickListener(this);
+            FindViewById<ImageView>(Resource.Id.FacebookSignInBtn).SetOnClickListener(this);
            
 
         }
@@ -76,12 +81,18 @@ namespace Rego_APP
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-        public void OnClick(View v)
+        public async void OnClick(View v)
         {
             if (v.Id == Resource.Id.GoogleSignBtn)
             {
                 g.Login(onLoginComplete, this);
             }
+            else if(v.Id == Resource.Id.FacebookSignInBtn)
+            {
+              var t =   await CrossFacebookClient.Current.RequestUserDataAsync(new string[] { "email", "first_name", "gender", "last_name", "birthday" }, new string[] { "email", "user_birthday" });
+                
+            }
+
         }
 
         private void onLoginComplete(GoogleUser arg1, string arg2)
@@ -93,10 +104,18 @@ namespace Rego_APP
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Android.Content.Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
-            if (requestCode == 1)
+            try
             {
-                GoogleSignInResult result = Auth.GoogleSignInApi.GetSignInResultFromIntent(data);
-                GoogleManager.Instance.OnAuthCompleted(result);
+                FacebookClientManager.OnActivityResult(requestCode, resultCode, data);
+                if (requestCode == 1)
+                {
+                    GoogleSignInResult result = Auth.GoogleSignInApi.GetSignInResultFromIntent(data);
+                    GoogleManager.Instance.OnAuthCompleted(result);
+                }
+            }
+            catch
+            {
+
             }
         }
 
