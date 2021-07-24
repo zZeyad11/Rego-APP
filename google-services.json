@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "264281076757",
+    "project_id": "rego-af3bb",
+    "storage_bucket": "rego-af3bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:264281076757:android:f4c8b1c8c130a281698a1c",
+        "android_client_info": {
+          "package_name": "com.RegoLimited.rego"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "264281076757-b06ip8gi463p9m7a2f9v2f4qmg7fdnli.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZqfQEtTLPcGgawbGlLULWAStDCGw5PLE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "264281076757-b06ip8gi463p9m7a2f9v2f4qmg7fdnli.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
