@@ -20,6 +20,7 @@ namespace Rego_APP
         public string Comment;
         public byte[] Image;
         public int Rating;
+        public DateTime Date;
 
         public LocationInfo Address;
     }

@@ -216,7 +216,7 @@ namespace Rego_APP
 
         Data GetData()
         {
-            return new Data() { Name = MainActivity.GoogleUser.Name, Email = MainActivity.GoogleUser.Email, Image = GetImageBytes(CurrentImage), Address = Second.Address , Rating = GetRate() , Comment = FindViewById<EditText>(Resource.Id.Comment).Text};
+            return new Data() { Name = MainActivity.GoogleUser.Name, Email = MainActivity.GoogleUser.Email, Image = GetImageBytes(CurrentImage), Address = Second.Address , Rating = GetRate() , Comment = FindViewById<EditText>(Resource.Id.Comment).Text , Date = DateTime.Now};
         }
 
         
