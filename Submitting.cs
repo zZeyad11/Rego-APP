@@ -19,6 +19,8 @@ using System.Net.Mail;
 using System.Net;
 using Java.Nio;
 using System.Threading.Tasks;
+using Java.IO;
+using Android.Util;
 
 namespace Rego_APP
 {
@@ -108,14 +110,15 @@ namespace Rego_APP
             return mBitmap;
         }
 
-        byte[] GetImageBytes(Android.Graphics.Bitmap bitmap)
+        string GetImageBytes(Android.Graphics.Bitmap bitmap)
         {
             try
             {
-                MemoryStream stream = new MemoryStream();
-                bitmap.Compress(Bitmap.CompressFormat.Jpeg, 0, stream);
-                byte[] bitmapData = stream.ToArray();
-                return bitmapData;
+                System.IO.MemoryStream bs = new System.IO.MemoryStream();
+                bitmap.Compress(Bitmap.CompressFormat.Jpeg, 90, bs);
+                byte[] byteArray = bs.ToArray();
+                return Base64.EncodeToString(byteArray, Android.Util.Base64Flags.Default);
+
             }
             catch
             {
@@ -194,16 +197,17 @@ namespace Rego_APP
                 await firebase.Child(s).PutAsync<Data>(d);
                 try
                 {
-                    SendEmail(d.Email, d.Name,s);
                     Snackbar.Make(FindViewById(Resource.Id.coordinatorLayout1), "You Will Get Noticed by an e-Mail Soon, Got your Request so Thanks :)", Snackbar.LengthLong).Show();
-                    await Task.Delay(1000);
+                    await Task.Delay(3000);
+                    SendEmail(d.Email, d.Name,s);
+                  
                     this.Finish();
 
                 }
                 catch
                 {
                     Snackbar.Make(FindViewById(Resource.Id.coordinatorLayout1), "Error While Sending e-Mail To You but still Got your Request so Thanks :)", Snackbar.LengthLong).Show();
-                    await Task.Delay(8000);
+                    await Task.Delay(3000);
                     this.Finish();
                 }
             }

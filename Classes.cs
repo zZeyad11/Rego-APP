@@ -18,7 +18,7 @@ namespace Rego_APP
         public string Name;
         public string Email;
         public string Comment;
-        public byte[] Image;
+        public string Image;
         public int Rating;
         public DateTime Date;
         public string ID;
