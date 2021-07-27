@@ -82,7 +82,7 @@ namespace Rego_APP
             var toAddress = new MailAddress(to, name);
             const string fromPassword = "1991dilipkumar";
             const string subject = "Submit Confirmation";
-            string body = $"Hey, We Would Like to Let You Know That We Got Your Submit, Thanks for your Contribuation \n ID:{trackID} \n Thanks & Regards, \n ADMIN";
+            string body = $"Hey, We Would Like to Let You Know That We Got Your Submit, Thanks for your Contribution \n\n ID:{trackID} \n Thanks & Regards, \n ADMIN";
 
             var smtp = new SmtpClient
             {

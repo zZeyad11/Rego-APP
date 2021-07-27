@@ -29,12 +29,28 @@
 
 
     </LinearLayout>
+     <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Click Here to Report an issue"
+        android:textStyle="bold"
+        android:textColor="#151626"
+            android:layout_margin="10dp"
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
+       /> 
+
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="170dp"
+        
         android:maxHeight="400dp"
         android:src="@drawable/camera"
-        android:padding="50dp"
+        android:layout_height="130dp"
+        android:paddingStart="50dp"
+        android:paddingEnd="50dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
+        
         android:id="@+id/CameraImage"/>
     
     <ImageView
@@ -42,12 +58,25 @@
         android:layout_height="20dp"
        android:src="@drawable/donate"
         android:layout_gravity="center"
-        android:id="@+id/CameraText"/>
-    
+        android:id="@+id/CameraText"
+        android:layout_marginBottom="30dp"/>
+     <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        android:textColor="#151626"
+            android:text="Please Support US By Watching Ads"
+        android:textStyle="bold"
+            android:layout_margin="10dp"
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
+       /> 
         <ImageView
         android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:padding="50dp"
+         android:layout_height="130dp"
+        android:paddingStart="50dp"
+        android:paddingEnd="50dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
        android:src="@drawable/ads"
         android:layout_gravity="center"
         android:id="@+id/AdsImage"/>

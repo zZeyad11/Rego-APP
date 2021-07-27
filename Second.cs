@@ -14,7 +14,7 @@ using Android.Widget;
 using App.User.LocationInfo.Services;
 using Java.Util;
 using MarcTron.Plugin;
-
+using Plugin.Geolocator;
 using Xamarin.Essentials;
 
 namespace Rego_APP
@@ -35,12 +35,41 @@ namespace Rego_APP
                 CrossMTAdmob.Current.ShowRewardedVideo();
             }
         }
+        public bool IsLocationAvailable()
+        {
+            if (!CrossGeolocator.IsSupported)
+                return false;
+
+            return CrossGeolocator.Current.IsGeolocationAvailable;
+        }
+
+        public void OpenSettings()
+        {
+            LocationManager LM = (LocationManager)Android.App.Application.Context.GetSystemService(Context.LocationService);
+
+
+            if (LM.IsProviderEnabled(LocationManager.GpsProvider) == false)
+            {
+                Intent intent = new Intent(Android.Provider.Settings.ActionLocationSourceSettings);
+                intent.AddFlags(ActivityFlags.NewTask);
+                intent.AddFlags(ActivityFlags.MultipleTask);
+                Android.App.Application.Context.StartActivity(intent);
+            }
+            else
+            {
+                //this is handled in the PCL
+            }
+        }
+
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.SecondActivity);
+            
             CrossMTAdmob.Current.LoadRewardedVideo("ca-app-pub-7480570357579844/1223919627");
+            CrossMTAdmob.Current.ShowRewardedVideo();
+
             GetLocation();
             StartInilize();
             // Create your application here
@@ -83,8 +112,28 @@ namespace Rego_APP
 
         private async void GetLocation()
         {
-            try
+            
+                try
             {
+                if (!IsLocationAvailable())
+                {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                    alert.SetTitle("Location Is not Available");
+                    alert.SetMessage("Please Turn On Location");
+
+                    alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                    {
+                        OpenSettings();
+                    });
+
+                    alert.SetNegativeButton("Cancel", (senderAlert, args) =>
+                    {
+                        this.Finish();
+                    });
+
+                    Dialog dialog = alert.Create();
+                    dialog.Show();
+                }
                 var location = await Geolocation.GetLastKnownLocationAsync();
                 Address = GetAddress(this, location.Latitude, location.Longitude);
                 FindViewById<TextView>(Resource.Id.LocationText).Text = $"{Address.country}, {Address.state}, {Address.city}";
