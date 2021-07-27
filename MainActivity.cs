@@ -97,6 +97,7 @@ namespace Rego_APP
 
         private void onLoginComplete(GoogleUser arg1, string arg2)
         {
+            if (string.IsNullOrEmpty(arg1.Email) || string.IsNullOrEmpty(arg1.Name)) return;
             GoogleUser = arg1;
             StartActivity(new Intent(this, typeof(Second)));
         }
