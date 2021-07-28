@@ -27,7 +27,26 @@ namespace Rego_APP
         {
             if (v.Id == Resource.Id.CameraImage || v.Id == Resource.Id.CameraText) //Go To Next
             {
-                StartActivity(new Intent(this, typeof(Submitting)));
+                if (string.IsNullOrEmpty(Address.address))
+                {
+                    GetLocation();
+                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                    alert.SetTitle("Location Is not Available");
+                    alert.SetMessage("Please Wait till We Know Your location");
+                    alert.SetCancelable(false);
+
+                    alert.SetPositiveButton("Ok", (senderAlert, args) =>
+                    {
+                        
+                    });
+                    Dialog dialog = alert.Create();
+                    dialog.SetCancelable(false);
+                    dialog.Show();
+                }
+                else
+                {
+                    StartActivity(new Intent(this, typeof(Submitting)));
+                }
             }
 
             else if(v.Id == Resource.Id.AdsImage || v.Id == Resource.Id.AdsText) //Watch Ad
@@ -40,7 +59,8 @@ namespace Rego_APP
             if (!CrossGeolocator.IsSupported)
                 return false;
 
-            return CrossGeolocator.Current.IsGeolocationAvailable;
+            return CrossGeolocator.Current.IsGeolocationAvailable && CrossGeolocator.Current.IsGeolocationEnabled;
+            
         }
 
         public void OpenSettings()
@@ -53,7 +73,7 @@ namespace Rego_APP
                 Intent intent = new Intent(Android.Provider.Settings.ActionLocationSourceSettings);
                 intent.AddFlags(ActivityFlags.NewTask);
                 intent.AddFlags(ActivityFlags.MultipleTask);
-                Android.App.Application.Context.StartActivity(intent);
+                StartActivityForResult(intent,36);
             }
             else
             {
@@ -113,13 +133,14 @@ namespace Rego_APP
         private async void GetLocation()
         {
             
-                try
+           try
             {
                 if (!IsLocationAvailable())
                 {
                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
                     alert.SetTitle("Location Is not Available");
                     alert.SetMessage("Please Turn On Location");
+                    alert.SetCancelable(false);
 
                     alert.SetPositiveButton("Ok", (senderAlert, args) =>
                     {
@@ -132,7 +153,10 @@ namespace Rego_APP
                     });
 
                     Dialog dialog = alert.Create();
+                    dialog.SetCancelable(false);
                     dialog.Show();
+                    
+                    
                 }
                 var location = await Geolocation.GetLastKnownLocationAsync();
                 Address = GetAddress(this, location.Latitude, location.Longitude);
@@ -163,6 +187,15 @@ namespace Rego_APP
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            if(requestCode == 36)
+            {
+                GetLocation();
+            }
         }
 
         private void StartInilize()

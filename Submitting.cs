@@ -21,10 +21,11 @@ using Java.Nio;
 using System.Threading.Tasks;
 using Java.IO;
 using Android.Util;
+using Android.Graphics.Drawables;
 
 namespace Rego_APP
 {
-    [Activity(Label = "Submitting")]
+    [Activity(Label = "Submitting" )]
     public class Submitting : Activity, View.IOnClickListener , IDialogInterfaceOnClickListener
     {
         Bitmap CurrentImage;
@@ -66,8 +67,11 @@ namespace Rego_APP
             if ((requestCode == 14) && (data != null))
             {
                 CurrentImage = (Bitmap)data.Extras.Get("data");
-                FindViewById<ImageView>(Resource.Id.CameraSelect).SetImageBitmap(CurrentImage);
                 FindViewById<ImageView>(Resource.Id.CameraSelect).SetPadding(0, 0, 0, 0);
+                FindViewById<ImageView>(Resource.Id.CameraSelect).SetImageBitmap(CurrentImage);
+               
+              
+
 
 
             }
@@ -186,11 +190,13 @@ namespace Rego_APP
         }
 
         static FirebaseClient firebase = new FirebaseClient("https://rego-af3bb-default-rtdb.firebaseio.com/");
-
+        bool issending = false;
         private async void Submitting_Click(object sender, EventArgs e)
         {
+            if (issending) return;
             try
             {
+                issending = true;
                 ((FloatingActionButton)sender).Enabled = false;
                 var s = (DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + DateTime.Now.Millisecond.ToString() + (new Random()).Next(0, 84898412)).ToString();
                 var d = GetData(s);
@@ -198,22 +204,21 @@ namespace Rego_APP
                 try
                 {
                     Snackbar.Make(FindViewById(Resource.Id.coordinatorLayout1), "You Will Get Noticed by an e-Mail Soon, Got your Request so Thanks :)", Snackbar.LengthLong).Show();
-                    await Task.Delay(3000);
                     SendEmail(d.Email, d.Name,s);
+                    issending = false;
                   
-                    this.Finish();
 
                 }
                 catch
                 {
                     Snackbar.Make(FindViewById(Resource.Id.coordinatorLayout1), "Error While Sending e-Mail To You but still Got your Request so Thanks :)", Snackbar.LengthLong).Show();
-                    await Task.Delay(3000);
-                    this.Finish();
+                    issending = false;
                 }
             }
             catch (Exception ex)
             {
                 Snackbar.Make(FindViewById(Resource.Id.coordinatorLayout1), "Error", Snackbar.LengthLong).Show();
+                issending = false;
             }
         }
 
